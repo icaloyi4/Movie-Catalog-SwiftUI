@@ -17,7 +17,7 @@ struct ContentView: View {
 //    }
     
 
-    @StateObject var viewRouter: ViewRouter
+    @EnvironmentObject var viewRouter: ViewRouter
     
     @ObservedObject var nowPlayingData = NowPlayingViewModel()
     @ObservedObject var upcomingData = UpcomingViewModel()
@@ -25,8 +25,6 @@ struct ContentView: View {
         let columns = Array(
         repeating: GridItem(.flexible(), spacing : 25), count: 2
         )
-        
-        
             ScrollView(.vertical, showsIndicators: false){
         VStack(alignment: HorizontalAlignment.leading, spacing: 20){
             Text("Upcoming Movies").padding(.leading)
@@ -34,17 +32,17 @@ struct ContentView: View {
             ScrollView(.horizontal, showsIndicators: false){
                 HStack {
                     ForEach(upcomingData.upcoming, id: \.id) { photo in
-                        VStack(alignment: .leading){
-                            WebImage(url: URL(string: "https://image.tmdb.org/t/p/w500/"+photo.posterPath)).resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                                    .frame(width: 150, height: 200)
-                                                                    .cornerRadius(5)
-                                          
-                            Text(photo.originalTitle).lineLimit(1)
-                        }.frame(width: 150, height: 200)
+                        Button(action: {
+                            
+                            viewRouter.currentPage = .page2
+                            print(viewRouter.currentPage)
+                        }) {
+                            UpcomingItem(upcoming: photo)
+                        }
+                        
                     }
                 }.padding()
-            }.frame(width: UIScreen.main.bounds.size.width - 20)
+            }.padding()
             Text("Now Playing").padding(.leading)
 //            Text("Now Playing").padding()
             
@@ -58,6 +56,21 @@ struct ContentView: View {
         }
             }
         
+    }
+}
+
+struct UpcomingItem : View{
+    var upcoming : UpcomingResult
+    
+    var body: some View{
+        VStack(alignment: .leading){
+            WebImage(url: URL(string: "https://image.tmdb.org/t/p/w500/"+upcoming.posterPath)).resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 150, height: 200)
+                                                    .cornerRadius(5)
+                          
+            Text(upcoming.originalTitle).lineLimit(1)
+        }.frame(width: 150, height: 200)
     }
 }
 
@@ -81,7 +94,7 @@ struct NowPlayingItem : View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(viewRouter: ViewRouter())
+        ContentView().environmentObject(ViewRouter())
     }
 }
 

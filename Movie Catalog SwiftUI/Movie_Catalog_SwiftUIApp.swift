@@ -14,7 +14,7 @@ struct Movie_Catalog_SwiftUIApp: App {
         
         var body: some Scene {
             WindowGroup {
-                MotherView(viewRouter: viewRouter)
+                MotherView().environmentObject(viewRouter)
             }
         }
     }

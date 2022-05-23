@@ -8,21 +8,20 @@
 import SwiftUI
 
 struct DetailMovies: View {
-    @EnvironmentObject var viewRouter: ViewRouter
+    let dataMovies : String
+    
+    @State var isNavigationBarHidden: Bool = true
+    
     var body: some View {
-        Button(action: {
-            withAnimation {
-                viewRouter.currentPage = .page1
+        VStack{
+            Text(dataMovies)
+            
+        }.navigationBarTitle(dataMovies)
+            .navigationBarHidden(self.isNavigationBarHidden)
+            .onAppear {
+                self.isNavigationBarHidden = true
             }
-        }) {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        }
         
     }
 }
 
-struct DetailMovies_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailMovies().environmentObject(ViewRouter())
-    }
-}

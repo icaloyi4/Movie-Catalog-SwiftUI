@@ -23,9 +23,9 @@ class NowPlayingViewModel : ObservableObject{
                 session.dataTask(with: URL(string: url)!) { (data, _, error) in
                     guard let data = data else { return }
                     do {
-                        //print(data)
+//                        print(data)
                         let json = try JSONDecoder().decode(Welcome.self, from: data)
-                        print(json.results)
+//                        print(json.results)
 
                         for movies in json.results {
                             DispatchQueue.main.async {
